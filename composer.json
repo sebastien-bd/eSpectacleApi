@@ -1,0 +1,19 @@
+{
+    "name": "espectacle/espectacle-api",
+    "type": "library",
+    "description": "Provides class & methods in order to access e-Spectacle database.",
+    "homepage": "http://www.e-spectacle.fr",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sébastien Bernard",
+            "email": "passagealacte@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.4"
+    },
+    "autoload": {
+        "files": ["Lib/"]
+    }
+}
