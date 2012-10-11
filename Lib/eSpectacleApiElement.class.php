@@ -62,7 +62,7 @@ abstract class eSpectacleApiElement
 	
 	public function extract($name, $id)
 	{
-		$xPath = new DOMXPath($this->dom);
+		$xPath = new \DOMXPath($this->dom);
 		$result = $xPath->query('//'.$name.'[@id='.$id.']');
 		if($result->length)
 		{
@@ -71,7 +71,7 @@ abstract class eSpectacleApiElement
 	    	$class = 'eSpectacle\\eSpectacleApi\\eSpectacleApi'.ucfirst($name);
 	    	if(!class_exists($class))
 	    	{
-	    		throw new Exception("Unparseable element ($name)");
+	    		throw new \Exception("Unparseable element ($name)");
 	    	}
 	    	return new $class($element, $this->dom);
 		}
@@ -94,7 +94,7 @@ abstract class eSpectacleApiElement
 		}
 		elseif(!$this->element)
 		{
-			throw new Exception("You must provide a DOMElement for loading.");
+			throw new \Exception("You must provide a DOMElement for loading.");
 		}
 		$this->load($this->element);
 		
@@ -106,7 +106,7 @@ abstract class eSpectacleApiElement
 		$name = $this->camel($name);
 		if(!isset($this->$name))
 		{
-			throw new Exception("$name is not a parameter for \"".get_class($this)."\"");
+			throw new \Exception("$name is not a parameter for \"".get_class($this)."\"");
 		}
 		$this->$name = $value;
 	}
