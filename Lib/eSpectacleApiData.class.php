@@ -12,9 +12,9 @@
  * 
  * @author	Sébastien Bernard <sebastien.bernard@e-spectacle.fr>
  */
-//namespace eSpectacle\eSpectacleApi\eSpectacleApiData;
+namespace eSpectacle\eSpectacleApi;
 
-//use eSpectacle\eSpectacleApi\eSpectacleApiElement;
+use eSpectacle\eSpectacleApi\eSpectacleApiElement;
 
 class eSpectacleApiData extends eSpectacleApiElement
 {

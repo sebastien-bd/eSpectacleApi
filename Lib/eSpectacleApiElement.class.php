@@ -12,7 +12,7 @@
  * 
  * @author	Sébastien Bernard <sebastien.bernard@e-spectacle.fr>
  */
-//namespace eSpectacle\eSpectacleApi\eSpectacleApiElement;
+namespace eSpectacle\eSpectacleApi;
 
 abstract class eSpectacleApiElement
 {
@@ -68,7 +68,7 @@ abstract class eSpectacleApiElement
 		{
 			$element =  $result->item(0);
 			
-	    	$class = 'eSpectacleApi'.ucfirst($name);
+	    	$class = 'eSpectacle\\eSpectacleApi\\eSpectacleApi'.ucfirst($name);
 	    	if(!class_exists($class))
 	    	{
 	    		throw new Exception("Unparseable element ($name)");

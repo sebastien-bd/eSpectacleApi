@@ -12,6 +12,8 @@
  * 
  * @author	Sébastien Bernard <sebastien.bernard@e-spectacle.fr>
  */
+namespace eSpectacle\eSpectacleApi;
+
 class eSpectacleApiExternal extends eSpectacleApiElement
 {
 	protected $type			= false;

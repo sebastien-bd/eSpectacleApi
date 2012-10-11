@@ -21,6 +21,8 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
+use eSpectacle\eSpectacleApi\eSpectacleApiData;
+
 class eSpectacleApiGet
 {
 	public $object;
