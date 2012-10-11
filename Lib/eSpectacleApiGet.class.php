@@ -19,7 +19,7 @@
  * @package	eSpectaclesApi
  * @author	Sébastien Bernard <sebastien.bernard@e-spectacle.fr>
  */
-//namespace eSpectacle\eSpectacleApi;;
+namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiGet
 {
