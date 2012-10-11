@@ -16,5 +16,5 @@
     "autoload": {
         "psr-0": { "eSpectacle\\eSpectacleApi": "Lib/" }
     },
-    "target-dir": "eSpectacle\eSpectacleApi"
+    "target-dir": "eSpectacle/eSpectacleApi"
 }
