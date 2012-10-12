@@ -19,9 +19,9 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 	protected $id			= false;
 	protected $activity		= '';
 	protected $status		= '';
-	protected $calendar		= false;
-	protected $production	= false;
-	protected $organization	= false;
+	protected $calendar		= null;
+	protected $production	= null;
+	protected $organization	= null;
 	
 	public function getId()
 	{

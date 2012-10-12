@@ -168,7 +168,7 @@ class eSpectacleApiGet
     		
     		$curl = curl_init($url);
 		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		    print_r($url);
+
 		    //TODO remove the next line with basic authentication
 		    curl_setopt($curl,CURLOPT_USERPWD, "guest:123456");
 		    
