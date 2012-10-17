@@ -76,7 +76,7 @@ class eSpectacleApiGetAll {
 	 */
 	public function load($force = false) {
 		
-		$url = 'http://sf.e-spectacles.fr/api_dev.php/webservice/getAll?key='. $this->key;
+		$url = 'http://sf.e-spectacles.fr/api_test.php/webservice/getAll?key='. $this->key;
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
