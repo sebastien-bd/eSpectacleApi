@@ -99,6 +99,7 @@ class eSpectacleApiGetAll {
 		
 		foreach($dom->documentElement->childNodes as $node){
 			if($node->nodeType == XML_ELEMENT_NODE){
+				print_r($node->nodeName.' - ');
 				$this->objects[] = new eSpectacleApiExternal($node, $dom);
 			}
 		}
