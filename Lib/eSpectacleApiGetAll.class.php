@@ -75,6 +75,7 @@ class eSpectacleApiGetAll {
 	 * @return string			Returns the XML file's content as a string
 	 */
 	public function load($force = false) {
+		print_r('load - ');
 		$url = 'http://sf.e-spectacles.fr/api.php/webservice/getAll?key='. $this->key;
 
 		$curl = curl_init($url);
@@ -93,7 +94,7 @@ class eSpectacleApiGetAll {
 		if ($this->hasErrors($xml)) {
 			return false;
 		}
-
+		print_r($xml);
 		$dom = new \DOMDocument();
 		print_r('create dom - ');
 		$dom->loadXML($xml);
