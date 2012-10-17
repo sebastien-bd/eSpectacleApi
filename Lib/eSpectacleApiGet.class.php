@@ -165,7 +165,7 @@ class eSpectacleApiGet
     	else
     	{
     		$url = 'http://sf.e-spectacles.fr/api_test.php/webservice/get?key='.$this->key.'&object='.$this->object.'&id='.$this->id;
-    		print_r($url);
+
     		$curl = curl_init($url);
 		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
