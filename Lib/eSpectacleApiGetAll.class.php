@@ -77,7 +77,6 @@ class eSpectacleApiGetAll {
 	public function load($force = false) {
 		
 		$url = 'http://sf.e-spectacles.fr/api_test.php/webservice/getAll?key='. $this->key;
-		print_r("load : $url - ");
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
@@ -94,15 +93,11 @@ class eSpectacleApiGetAll {
 		if ($this->hasErrors($xml)) {
 			return false;
 		}
-		print_r($xml);
 		$dom = new \DOMDocument();
-		print_r('create dom - ');
 		$dom->loadXML($xml);
-		print_r('dom loaded');
 		
 		foreach($dom->documentElement->childNodes as $node){
 			if($node->nodeType == XML_ELEMENT_NODE){
-				print_r($node->nodeName.' - ');
 				$this->objects[] = new eSpectacleApiExternal($node, $dom);
 			}
 		}
