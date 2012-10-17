@@ -123,6 +123,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
 		$this->date = $this->element->getAttribute('date');
+		$this->update = $this->element->getAttribute('update');
 		foreach($this->element->childNodes as $child)
 		{
 			if($child->nodeType == XML_ELEMENT_NODE)
