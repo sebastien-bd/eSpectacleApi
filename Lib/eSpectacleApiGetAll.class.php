@@ -21,7 +21,7 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
-class eSpectacleApiGetAll {
+class eSpectacleApiGetAlls {
 	public $key;
 
 	public $objects	= array();
