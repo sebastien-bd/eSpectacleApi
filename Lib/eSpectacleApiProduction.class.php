@@ -19,6 +19,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	protected $id			= false;
 	protected $version		= false;
 	protected $date			= '';
+	protected $update		= '';
 	protected $title		= '';
 	protected $alphaTitle	= '';
 	protected $description	= '';
@@ -44,6 +45,11 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	public function getDate()
 	{
 		return $this->date;
+	}
+
+	public function getUpdate()
+	{
+		return $this->update;
 	}
 	
 	public function getTitle()

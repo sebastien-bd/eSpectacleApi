@@ -19,6 +19,7 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	protected $id					= false;
 	protected $version				= false;
 	protected $date					= '';
+	protected $update				= '';
 	protected $completeName 		= '';
 	protected $name 				= '';
 	protected $publicPhonenumber 	= '';
@@ -28,6 +29,26 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	protected $location 			= false;
 	protected $activities			= array();
 	protected $relations 			= array();
+
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	public function getVersion()
+	{
+		return $this->version;
+	}
+	
+	public function getDate()
+	{
+		return $this->date;
+	}
+	
+	public function getUpdate()
+	{
+		return $this->update;
+	}
 	
 	public function getActivities($activity = false)
 	{
