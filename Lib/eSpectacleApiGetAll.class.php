@@ -43,6 +43,10 @@ class eSpectacleApiGetAll {
 		return $this->errors;
 	}
 
+	public function getObjects(){
+		return $this->objects;
+	}
+	
 	/**
 	 * Whether or not the server sent errors
 	 * @param unknown_type $xml
@@ -99,7 +103,7 @@ class eSpectacleApiGetAll {
 				$this->objects[] = new eSpectacleApiExternal($node, $dom);
 			}
 		}
-		return true;
+		return $this->getObjects();
 		//$this->datas = new eSpectacleApiData($xml);
 		//return $this->datas->load();
 	}
