@@ -95,7 +95,9 @@ class eSpectacleApiGetAll {
 		}
 
 		$dom = new \DOMDocument();
+		print_r('create dom - ');
 		$dom->loadXML($xml);
+		print_r('dom loaded');
 		
 		foreach($dom->documentElement->childNodes as $node){
 			if($node->nodeType == XML_ELEMENT_NODE){
