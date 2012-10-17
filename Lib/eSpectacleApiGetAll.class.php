@@ -94,7 +94,7 @@ class eSpectacleApiGetAll {
 			return false;
 		}
 
-		$dom = new DOMDocument();
+		$dom = new \DOMDocument();
 		$dom->loadXML($xml);
 		
 		foreach($dom->documentElement->childNodes as $node){
