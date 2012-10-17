@@ -20,7 +20,6 @@
  * @author	Sébastien Bernard <sebastien.bernard@e-spectacle.fr>
  */
 namespace eSpectacle\eSpectacleApi;
-use eSpectacle\eSpectacleApi\eSpectacleApiData;
 
 class eSpectacleApiGetAll {
 	public $key;
@@ -103,7 +102,7 @@ class eSpectacleApiGetAll {
 				$this->objects[] = new eSpectacleApiExternal($node, $dom);
 			}
 		}
-		return $this->getObjects();
+		return $this->objects;
 		//$this->datas = new eSpectacleApiData($xml);
 		//return $this->datas->load();
 	}
