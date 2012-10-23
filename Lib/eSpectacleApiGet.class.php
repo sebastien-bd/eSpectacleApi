@@ -164,14 +164,11 @@ class eSpectacleApiGet
     	}
     	else
     	{
-    		$url = 'http://sf.e-spectacles.fr/api_test.php/webservice/get?key='.$this->key.'&object='.$this->object.'&id='.$this->id;
+    		$url = 'http://api.e-spectacle.fr/webservice/get?key='.$this->key.'&object='.$this->object.'&id='.$this->id;
 
     		$curl = curl_init($url);
 		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
-		    //TODO remove the next line with basic authentication
-		    curl_setopt($curl,CURLOPT_USERPWD, "guest:123456");
-		    
 		    $xml = curl_exec($curl);
 		    curl_close($curl);
 		    
