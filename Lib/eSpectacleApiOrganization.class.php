@@ -26,6 +26,9 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	protected $privatePhonenumber	= '';
 	protected $email 				= '';
 	protected $website 				= '';
+	protected $fingerprint			= '';
+	protected $largeQRCode			= '';
+	protected $smallQRCode			= '';
 	protected $location 			= false;
 	protected $activities			= array();
 	protected $relations 			= array();
@@ -99,6 +102,17 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	public function getLocation()
 	{
 		return $this->location;
+	}
+
+	public function getFingerprint()
+	{
+		return $this->credits;
+	}
+	
+	public function getQRCode($size)
+	{
+		$property = "$sizeQRCode";
+		return $this->$property;
 	}
 	
 	public function getRelations()

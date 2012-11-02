@@ -28,6 +28,9 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	protected $picture		= '';
 	protected $thumbnail	= '';
 	protected $duration		= '';
+	protected $fingerprint	= '';
+	protected $largeQRCode	= '';
+	protected $smallQRCode	= '';
 	protected $activities	= array();
 	protected $credits		= false;
 	protected $relations	= false;
@@ -112,7 +115,18 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	{
 		return $this->credits;
 	}
-	
+
+	public function getFingerprint()
+	{
+		return $this->credits;
+	}
+
+	public function getQRCode($size)
+	{
+		$property = "$sizeQRCode";
+		return $this->$property;
+	}
+
 	public function getRelations()
 	{
 		return $this->relations;
