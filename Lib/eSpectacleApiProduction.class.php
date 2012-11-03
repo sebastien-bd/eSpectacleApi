@@ -164,11 +164,11 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 						}
 						break;
 
-					case 'qrcodeSmall':
+					case 'qrcode-small':
 						$this->smallQRCode = $child->nodeValue;
 						break;
 						
-					case 'qrcodeLarge':
+					case 'qrcode-large':
 						$this->largeQRCode = $child->nodeValue;
 						break;
 						
