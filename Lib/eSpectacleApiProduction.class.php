@@ -123,7 +123,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 
 	public function getQRCode($size)
 	{
-		$property = "$sizeQRCode";
+		$property = $size."QRCode";
 		return $this->$property;
 	}
 
@@ -162,6 +162,14 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 							}
 							$this->relations[] = $newRelation;
 						}
+						break;
+
+					case 'qrcodeSmall':
+						$this->smallQRCode = $child->nodeValue;
+						break;
+						
+					case 'qrcodeLarge':
+						$this->largeQRCode = $child->nodeValue;
 						break;
 						
 					default:
