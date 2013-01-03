@@ -97,7 +97,7 @@ abstract class eSpectacleApiElement
 		    	$class = 'eSpectacleApi'.ucfirst($name);
 		    	if(!class_exists($class))
 		    	{
-		    		throw new Exception("Unparseable element ($name)");
+		    		throw new \Exception("Unparseable element ($name)");
 		    	}
 		    	$object = new $class($element, $this->dom);
 
@@ -124,7 +124,7 @@ abstract class eSpectacleApiElement
 		}
 		elseif(!$this->element)
 		{
-			throw new Exception("You must provide a DOMElement for loading.");
+			throw new \Exception("You must provide a DOMElement for loading.");
 		}
 		$this->load($this->element);
 		
@@ -136,7 +136,7 @@ abstract class eSpectacleApiElement
 		$name = $this->camel($name);
 		if(!isset($this->$name))
 		{
-			throw new Exception("$name is not a parameter for \"".get_class($this)."\"");
+			throw new \Exception("$name is not a parameter for \"".get_class($this)."\"");
 		}
 		$this->$name = $value;
 	}
