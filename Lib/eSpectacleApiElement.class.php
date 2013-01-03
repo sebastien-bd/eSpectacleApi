@@ -87,7 +87,7 @@ abstract class eSpectacleApiElement
 		if($object = eSpectacleApiLibrary::getObject($name, $id)){
 			return $object;
 		}else{
-			$xPath = new DOMXPath($this->dom);
+			$xPath = new \DOMXPath($this->dom);
 			$result = $xPath->query('//'.$name.'[@id='.$id.']');
 			if($result->length)
 			{
@@ -116,7 +116,7 @@ abstract class eSpectacleApiElement
 		return $this->loaded;
 	}
 	
-	public function loadElement(DOMElement $element = null)
+	public function loadElement(\DOMElement $element = null)
 	{
 		if(!is_null($element))
 		{

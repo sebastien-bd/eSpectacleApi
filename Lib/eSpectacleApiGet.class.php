@@ -137,7 +137,7 @@ class eSpectacleApiGet
 		$dom = new DomDocument();
     	$dom->loadXml($xml, LIBXML_NOBLANKS);
     	
-		$xPath = new DOMXPath($dom);
+		$xPath = new \DOMXPath($dom);
 		$errors = $xPath->query('//errors');
 		if($errors->length)
 		{
