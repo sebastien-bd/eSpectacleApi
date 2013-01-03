@@ -136,8 +136,8 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
-		$this->date = new DateTime($this->element->getAttribute('date'));
-		$this->update = new DateTime($this->element->getAttribute('update'));
+		$this->date = new \DateTime($this->element->getAttribute('date'));
+		$this->update = new \DateTime($this->element->getAttribute('update'));
 		foreach($this->element->childNodes as $child)
 		{
 			if($child->nodeType == XML_ELEMENT_NODE)

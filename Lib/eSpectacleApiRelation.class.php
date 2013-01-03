@@ -63,7 +63,7 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
-		$this->date = new DateTime($this->element->getAttribute('date'));
+		$this->date = new \DateTime($this->element->getAttribute('date'));
 		$this->activity = $this->element->getAttribute('activity');
 		
 		foreach($this->element->childNodes as $child)

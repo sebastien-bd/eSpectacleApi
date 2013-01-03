@@ -76,7 +76,7 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 		$this->id = $this->element->getAttribute('id');
 		$this->type = $this->element->getAttribute('type');
 		$this->activities = explode(', ', $this->element->getAttribute('activity'));
-		$this->update = new DateTime($this->element->getAttribute('update'));
+		$this->update = new \DateTime($this->element->getAttribute('update'));
 
 		foreach($this->element->childNodes as $child)
 		{
