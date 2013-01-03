@@ -1,5 +1,7 @@
 <?php
 
+namespace eSpectacle\eSpectacleApi;
+
 class eSpectacleApiLibrary 
 {
 	private static $_instance = null;
