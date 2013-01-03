@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+//include_once 'eSpectacleApiData.class.php';
+
 /**
  * eSpectaclesApiGetAll offers convenience methods to call the eSpectacles API (function GET_ALL) :
  * - generates HTML request
@@ -51,10 +53,10 @@ class eSpectacleApiGetAll {
 	 * 
 	 */
 	public function hasErrors($xml) {
-		$dom = new \DomDocument();
+		$dom = new DomDocument();
 		$dom->loadXml($xml, LIBXML_NOBLANKS);
 
-		$xPath = new \DOMXPath($dom);
+		$xPath = new DOMXPath($dom);
 		$errors = $xPath->query('//errors');
 		if ($errors->length) {
 			foreach ($errors as $error) {
@@ -91,7 +93,7 @@ class eSpectacleApiGetAll {
 		if ($this->hasErrors($xml)) {
 			return false;
 		}
-		$dom = new \DOMDocument();
+		$dom = new DOMDocument();
 		$dom->loadXML($xml);
 		
 		foreach($dom->documentElement->childNodes as $node){

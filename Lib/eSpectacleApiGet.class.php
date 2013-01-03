@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+//include_once 'eSpectacleApiData.class.php';
+
 /**
  * eSpectaclesApiGet offers convenience methods to call the eSpectacles API (function GET) :
  * - generates HTML request
@@ -30,6 +32,7 @@ class eSpectacleApiGet
 	public $cacheOn		= false;	// Active the cache
 	public $cachePath	= '';		// Path to the Cache directory
 	public $cacheDelay	= 86400;	// Delay to the next loading
+	public $host		= "http://api.e-spectacle.fr/";
 	
 	public $datas;
 	public $errors;
@@ -41,8 +44,11 @@ class eSpectacleApiGet
 	 * @param integer $id		object's unique id
 	 * @return void
 	 */
-	public function __construct($key, $object, $id)
+	public function __construct($key, $object, $id, $host = false)
 	{
+		if($host){
+			$this->host = $host;
+		}
 		$this->object = $object;
 		$this->id = $id;
 		$this->key = $key;
@@ -128,10 +134,10 @@ class eSpectacleApiGet
 	 */
 	public function hasErrors($xml)
 	{
-		$dom = new \DomDocument();
+		$dom = new DomDocument();
     	$dom->loadXml($xml, LIBXML_NOBLANKS);
     	
-		$xPath = new \DOMXPath($dom);
+		$xPath = new DOMXPath($dom);
 		$errors = $xPath->query('//errors');
 		if($errors->length)
 		{
@@ -162,7 +168,7 @@ class eSpectacleApiGet
     	}
     	else
     	{
-    		$url = 'http://api.e-spectacle.fr/webservice/get?key='.$this->key.'&object='.$this->object.'&id='.$this->id;
+    		$url = $this->host.'webservice/get?key='.$this->key.'&object='.$this->object.'&id='.$this->id;
 
     		$curl = curl_init($url);
 		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

@@ -22,6 +22,7 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 	protected $calendar		= false;
 	protected $production	= false;
 	protected $organization	= false;
+	protected $application	= false;
 	
 	public function getId()
 	{
@@ -52,12 +53,17 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 	{
 		return $this->organization;
 	}
+
+	public function getApp()
+	{
+		return $this->application;
+	}
 	
 	public function load()
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
-		$this->date = $this->element->getAttribute('date');
+		$this->date = new DateTime($this->element->getAttribute('date'));
 		$this->activity = $this->element->getAttribute('activity');
 		
 		foreach($this->element->childNodes as $child)
@@ -74,7 +80,11 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 					case 'calendar':
 						$this->calendar = new eSpectacleApiCalendar($child);
 						break;
-					
+
+					case 'application':
+						$this->application = new eSpectacleApiApplication($child);
+						break;
+								
 					default:
 						$this->set($child->nodeName, $child->nodeValue);
 				}

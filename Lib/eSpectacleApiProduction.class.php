@@ -39,7 +39,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	{
 		return $this->id;
 	}
-	
+
 	public function getVersion()
 	{
 		return $this->version;
@@ -95,11 +95,11 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		return $this->duration;
 	}
 	
-	public function getActivities($activity = false)
+	public function getActivities($activity = false, $order = false)
 	{
 		if(!$activity)
 		{
-			return array_keys($this->activities);
+			return $this->getActivitiesOrder(array_keys($this->activities));
 		}
 		elseif(isset($this->activities[$activity]))
 		{
@@ -118,7 +118,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 
 	public function getFingerprint()
 	{
-		return $this->credits;
+		return $this->fingerprint;
 	}
 
 	public function getQRCode($size)
@@ -136,8 +136,8 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
-		$this->date = $this->element->getAttribute('date');
-		$this->update = $this->element->getAttribute('update');
+		$this->date = new DateTime($this->element->getAttribute('date'));
+		$this->update = new DateTime($this->element->getAttribute('update'));
 		foreach($this->element->childNodes as $child)
 		{
 			if($child->nodeType == XML_ELEMENT_NODE)
@@ -162,16 +162,17 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 							}
 							$this->relations[] = $newRelation;
 						}
+						//ksort($this->activities);
 						break;
 
 					case 'qrcode-small':
 						$this->smallQRCode = $child->nodeValue;
 						break;
-						
+					
 					case 'qrcode-large':
 						$this->largeQRCode = $child->nodeValue;
 						break;
-						
+								
 					default:
 						$this->set($child->nodeName, $child->nodeValue);
 				}

@@ -18,6 +18,8 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 {
 	protected $id					= false;
 	protected $version				= false;
+	protected $slug					= '';
+	protected $fingerprint			= '';
 	protected $date					= '';
 	protected $update				= '';
 	protected $completeName 		= '';
@@ -26,18 +28,18 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	protected $privatePhonenumber	= '';
 	protected $email 				= '';
 	protected $website 				= '';
-	protected $fingerprint			= '';
 	protected $largeQRCode			= '';
 	protected $smallQRCode			= '';
 	protected $location 			= false;
 	protected $activities			= array();
+	protected $credits				= false;
 	protected $relations 			= array();
 
 	public function getId()
 	{
 		return $this->id;
 	}
-	
+
 	public function getVersion()
 	{
 		return $this->version;
@@ -46,6 +48,11 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	public function getDate()
 	{
 		return $this->date;
+	}
+
+	public function getSlug()
+	{
+		return $this->slug;
 	}
 	
 	public function getUpdate()
@@ -106,13 +113,18 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 
 	public function getFingerprint()
 	{
-		return $this->credits;
+		return $this->fingerprint;
 	}
 	
 	public function getQRCode($size)
 	{
 		$property = $size."QRCode";
 		return $this->$property;
+	}
+
+	public function getCredits()
+	{
+		return $this->credits;
 	}
 	
 	public function getRelations()
@@ -124,14 +136,18 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
-		$this->date = $this->element->getAttribute('date');
-		$this->update = $this->element->getAttribute('update');
+		$this->date = new DateTime($this->element->getAttribute('date'));
+		$this->update = new DateTime($this->element->getAttribute('update'));
 		foreach($this->element->childNodes as $child)
 		{
 			if($child->nodeType == XML_ELEMENT_NODE)
 			{
 				switch($child->nodeName)
 				{
+					case 'credits':
+						$this->credits = new eSpectacleApiCredits($child);
+						break;
+					
 					case 'location':
 						$this->location = new eSpectacleApiLocation($child);
 						break;
@@ -165,7 +181,7 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 					case 'qrcode-large':
 						$this->largeQRCode = $child->nodeValue;
 						break;
-						
+								
 					default:
 						$this->set($child->nodeName, $child->nodeValue);
 				}

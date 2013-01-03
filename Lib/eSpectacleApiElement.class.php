@@ -32,6 +32,28 @@ abstract class eSpectacleApiElement
 			$this->loadElement();
 		}
 	}
+
+	public function getDefaultActivitiesOrder(){
+		return array('place', 'productor', 'distributor');
+	}
+	
+	public function getActivitiesOrder($activities, $order = false){
+		if(!$order){
+			$order = $this->getDefaultActivitiesOrder();
+		}
+		$result = array();
+		foreach($order as $default){
+			if(in_array($default, $activities)){
+				$result[] = $default;
+			}
+		}
+		foreach($activities as $activity){
+			if(!in_array($activity, $result)){
+				$result[] = $activity;
+			}
+		}
+		return $result;
+	}
 	
 	public static function camel($str, $upper = false, $separator = '-')
 	{
@@ -62,22 +84,30 @@ abstract class eSpectacleApiElement
 	
 	public function extract($name, $id)
 	{
-		$xPath = new \DOMXPath($this->dom);
-		$result = $xPath->query('//'.$name.'[@id='.$id.']');
-		if($result->length)
-		{
-			$element =  $result->item(0);
-			
-	    	$class = 'eSpectacle\\eSpectacleApi\\eSpectacleApi'.ucfirst($name);
-	    	if(!class_exists($class))
-	    	{
-	    		throw new \Exception("Unparseable element ($name)");
-	    	}
-	    	return new $class($element, $this->dom);
-		}
-		else 
-		{
-			return false;
+		if($object = eSpectacleApiLibrary::getObject($name, $id)){
+			return $object;
+		}else{
+			$xPath = new DOMXPath($this->dom);
+			$result = $xPath->query('//'.$name.'[@id='.$id.']');
+			if($result->length)
+			{
+				$element =  $result->item(0);
+				
+		    	//$class = 'eSpectacle\\eSpectacleApi\\eSpectacleApi'.ucfirst($name);
+		    	$class = 'eSpectacleApi'.ucfirst($name);
+		    	if(!class_exists($class))
+		    	{
+		    		throw new Exception("Unparseable element ($name)");
+		    	}
+		    	$object = new $class($element, $this->dom);
+
+		    	eSpectacleApiLibrary::addObject($name, $id, $object);
+		    	return $object;
+			}
+			else 
+			{
+				return false;
+			}
 		}
 	}
 	
@@ -94,7 +124,7 @@ abstract class eSpectacleApiElement
 		}
 		elseif(!$this->element)
 		{
-			throw new \Exception("You must provide a DOMElement for loading.");
+			throw new Exception("You must provide a DOMElement for loading.");
 		}
 		$this->load($this->element);
 		
@@ -106,7 +136,7 @@ abstract class eSpectacleApiElement
 		$name = $this->camel($name);
 		if(!isset($this->$name))
 		{
-			throw new \Exception("$name is not a parameter for \"".get_class($this)."\"");
+			throw new Exception("$name is not a parameter for \"".get_class($this)."\"");
 		}
 		$this->$name = $value;
 	}
