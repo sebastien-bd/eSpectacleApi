@@ -22,7 +22,7 @@ class eSpectacleApiData extends eSpectacleApiElement
 
 	public function __construct($xml)
 	{
-		$this->dom = new DomDocument();
+		$this->dom = new \DOMDocument();
     	$this->dom->loadXml($xml, LIBXML_NOBLANKS);
     	
     	$this->element = $this->dom->documentElement;

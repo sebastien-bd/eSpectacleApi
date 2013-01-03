@@ -53,7 +53,7 @@ class eSpectacleApiGetAll {
 	 * 
 	 */
 	public function hasErrors($xml) {
-		$dom = new \DomDocument();
+		$dom = new \DOMDocument();
 		$dom->loadXml($xml, LIBXML_NOBLANKS);
 
 		$xPath = new \DOMXPath($dom);
