@@ -96,6 +96,16 @@ class eSpectacleApiGet
 		}
 		return false;
 	}
+
+	/**
+	 * Retrieve the date of the object
+	 * @access public
+	 * @return DateTime	the date of the xml file
+	 */
+	public function getDate()
+	{
+		return $this->datas->getDate();
+	}
 	
 	/**
 	 * Whether or not the current object has a not expired cache file

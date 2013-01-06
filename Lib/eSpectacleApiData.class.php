@@ -19,6 +19,7 @@ use eSpectacle\eSpectacleApi\eSpectacleApiElement;
 class eSpectacleApiData extends eSpectacleApiElement
 {
 	public $root = false;
+	public $date = false;
 
 	public function __construct($xml)
 	{
@@ -26,6 +27,11 @@ class eSpectacleApiData extends eSpectacleApiElement
     	$this->dom->loadXml($xml, LIBXML_NOBLANKS);
     	
     	$this->element = $this->dom->documentElement;
+	}
+	
+	public function getDate()
+	{
+		return $this->date;
 	}
 	
 	public function getObject()
@@ -39,6 +45,9 @@ class eSpectacleApiData extends eSpectacleApiElement
 	 */
 	public function load()
 	{
+		$intro = $this->dom->getElementsByTagName('e-spectacle');
+		$this->date = new \DateTime($intro->item(0)->getAttribute('date'));
+		
 		$root = $this->dom->getElementsByTagName('external-root');
     	$root = $root->item(0);
     	$this->root = $this->extract($root->getAttribute('type'), $root->getAttribute('id'));
