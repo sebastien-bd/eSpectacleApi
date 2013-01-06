@@ -88,7 +88,7 @@ abstract class eSpectacleApiElement
 			return $object;
 		}else{
 			$xPath = new \DOMXPath($this->dom);
-			$result = $xPath->query('//'.$name.'[@id='.$id.']');
+			$result = $xPath->query('//'.$name.'[@id="'.$id.'"]');
 			if($result->length)
 			{
 				$element =  $result->item(0);

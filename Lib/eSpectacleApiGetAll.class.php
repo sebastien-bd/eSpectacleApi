@@ -81,7 +81,7 @@ class eSpectacleApiGetAll {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
 		//TODO remove the next line with basic authentication
-		curl_setopt($curl, CURLOPT_USERPWD, "guest:123456");
+		//curl_setopt($curl, CURLOPT_USERPWD, "guest:123456");
 
 		$xml = curl_exec($curl);
 		curl_close($curl);
