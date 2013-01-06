@@ -88,13 +88,20 @@ abstract class eSpectacleApiElement
 			return $object;
 		}else{
 			$xPath = new \DOMXPath($this->dom);
-			$result = $xPath->query('//'.$name.'[@id="'.$id.'"]');
+			
+			if($name == 'relation'){
+				$query = '//'.$name.'[@id='.$id.']';
+			}else{
+				$query = '//'.$name.'[@id="'.$id.'"]';
+			}
+
+			$result = $xPath->query($query);
 			if($result->length)
 			{
 				$element =  $result->item(0);
 				
 		    	$class = 'eSpectacle\\eSpectacleApi\\eSpectacleApi'.ucfirst($name);
-		    	//$class = 'eSpectacleApi'.ucfirst($name);
+				//$class = 'eSpectacleApi'.ucfirst($name);
 		    	if(!class_exists($class))
 		    	{
 		    		throw new \Exception("Unparseable element ($name)");
