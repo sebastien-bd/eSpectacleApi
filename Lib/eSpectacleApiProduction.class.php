@@ -121,6 +121,11 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		return $this->fingerprint;
 	}
 
+	public function getUrlFingerprint()
+	{
+		return 'http://e-spct.fr/'.$this->fingerprint;
+	}
+	
 	public function getQRCode($size)
 	{
 		$property = $size."QRCode";
