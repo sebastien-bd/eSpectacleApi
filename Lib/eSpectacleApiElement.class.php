@@ -16,9 +16,10 @@ namespace eSpectacle\eSpectacleApi;
 
 abstract class eSpectacleApiElement
 {
-	protected $loaded 	= false;
-	protected $dom		= false;
-	protected $element	= false;
+	protected $loaded 		= false;
+	protected $dom			= false;
+	protected $element		= false;
+	protected $available	= null;
 	
 	public function __construct($element = false, $dom = false)
 	{
@@ -87,35 +88,42 @@ abstract class eSpectacleApiElement
 		if($object = eSpectacleApiLibrary::getObject($name, $id)){
 			return $object;
 		}else{
-			$xPath = new \DOMXPath($this->dom);
-			
-			if($name == 'relation'){
-				$query = '//'.$name.'[@id='.$id.']';
-			}else{
-				$query = '//'.$name.'[@id="'.$id.'"]';
-			}
-
-			$result = $xPath->query($query);
-			if($result->length)
+			if($result = $this->exists($name, $id))
 			{
 				$element =  $result->item(0);
-				
 		    	$class = 'eSpectacle\\eSpectacleApi\\eSpectacleApi'.ucfirst($name);
-				//$class = 'eSpectacleApi'.ucfirst($name);
-		    	if(!class_exists($class))
+				if(!class_exists($class))
 		    	{
 		    		throw new \Exception("Unparseable element ($name)");
 		    	}
 		    	$object = new $class($element, $this->dom);
-
-		    	eSpectacleApiLibrary::addObject($name, $id, $object);
-		    	return $object;
 			}
 			else 
 			{
-				return false;
+				$object = new eSpectacleApiGarbage();
 			}
+
+			eSpectacleApiLibrary::addObject($name, $id, $object);
+			return $object;
 		}
+	}
+	
+	public function exists($name, $id)
+	{
+		$xPath = new \DOMXPath($this->dom);
+		if($name == 'relation'){
+			$query = '//'.$name.'[@id='.$id.']';
+		}else{
+			$query = '//'.$name.'[@id="'.$id.'"]';
+		}
+		$result = $xPath->query($query);
+		return $result->length ? $result : false;
+	}
+
+	public function isAvailable()
+	{
+		$this->available = true;
+		return $this->available;
 	}
 	
 	public function isLoaded()
@@ -141,11 +149,21 @@ abstract class eSpectacleApiElement
 	public function set($name, $value)
 	{
 		$name = $this->camel($name);
+		
 		if(!isset($this->$name))
 		{
 			throw new \Exception("$name is not a parameter for \"".get_class($this)."\"");
 		}
 		$this->$name = $value;
+	}
+	
+	public function processValue($value, $default = false, $template = false){
+		$value = is_null($value) ? false : $value;
+		$value = $value ? $value : $default;
+		if($value && $template){
+			$value = sprintf($template, $value);
+		}
+		return $value;
 	}
 	
 	abstract protected function load();

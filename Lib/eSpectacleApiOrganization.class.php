@@ -19,7 +19,8 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	protected $id					= false;
 	protected $version				= false;
 	protected $slug					= '';
-	protected $fingerprint			= '';
+	protected $pressReport			= '';
+	protected $tinyPressReport		= '';
 	protected $date					= '';
 	protected $update				= '';
 	protected $completeName 		= '';
@@ -50,9 +51,9 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 		return $this->date;
 	}
 
-	public function getSlug()
+	public function getSlug($default = false, $template = false)
 	{
-		return $this->slug;
+		return $this->processValue($this->slug, $default, $template);
 	}
 	
 	public function getUpdate()
@@ -76,34 +77,34 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 		}
 	}
 	
-	public function getCompleteName()
+	public function getCompleteName($default = false, $template = false)
 	{
-		return $this->completeName;
+		return $this->processValue($this->completeName, $default, $template);
 	}
 	
-	public function getName()
+	public function getName($default = false, $template = false)
 	{
-		return $this->name;
+		return $this->processValue($this->name, $default, $template);
 	}
 	
-	public function getPublicPhonenumber()
+	public function getPublicPhonenumber($default = false, $template = false)
 	{
-		return $this->publicPhonenumber;
+		return $this->processValue($this->publicPhonenumber, $default, $template);
 	}
 	
-	public function getPrivatePhonenumber()
+	public function getPrivatePhonenumber($default = false, $template = false)
 	{
-		return $this->privatePhonenumber;
+		return $this->processValue($this->privatePhonenumber, $default, $template);
 	}
 	
-	public function getEmail()
+	public function getEmail($default = false, $template = false)
 	{
-		return $this->email;
+		return $this->processValue($this->email, $default, $template);
 	}
 	
-	public function getWebsite()
+	public function getWebsite($default = false, $template = false)
 	{
-		return $this->website;
+		return $this->processValue($this->website, $default, $template);
 	}
 	
 	public function getLocation()
@@ -111,9 +112,14 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 		return $this->location;
 	}
 
-	public function getFingerprint()
+	public function getPressReport($default = false, $template = false)
 	{
-		return $this->fingerprint;
+		return $this->processValue($this->pressReport, $default, $template);
+	}
+	
+	public function getTinyPressReport($default = false, $template = false)
+	{
+		return $this->processValue($this->tinyPressReport, $default, $template);
 	}
 	
 	public function getQRCode($size)
@@ -122,7 +128,7 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 		return $this->$property;
 	}
 
-	public function getCredits()
+	public function getCredits($default = false, $template = false)
 	{
 		return $this->credits;
 	}

@@ -16,24 +16,24 @@ namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiProduction extends eSpectacleApiElement
 {
-	protected $id			= false;
-	protected $version		= false;
-	protected $date			= '';
-	protected $update		= '';
-	protected $title		= '';
-	protected $alphaTitle	= '';
-	protected $description	= '';
-	protected $creation		= '';
-	protected $slug			= '';
-	protected $picture		= '';
-	protected $thumbnail	= '';
-	protected $duration		= '';
-	protected $fingerprint	= '';
-	protected $largeQRCode	= '';
-	protected $smallQRCode	= '';
-	protected $activities	= array();
-	protected $credits		= false;
-	protected $relations	= false;
+	protected $id				= false;
+	protected $version			= false;
+	protected $date				= '';
+	protected $update			= '';
+	protected $title			= '';
+	protected $alphaTitle		= '';
+	protected $description		= '';
+	protected $creation			= '';
+	protected $slug				= '';
+	protected $picture			= '';
+	protected $duration			= '';
+	protected $pressReport		= '';
+	protected $tinyPressReport	= '';
+	protected $largeQRCode		= '';
+	protected $smallQRCode		= '';
+	protected $activities		= array();
+	protected $credits			= false;
+	protected $relations		= false;
 	
 	public function getId()
 	{
@@ -55,44 +55,43 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		return $this->update;
 	}
 	
-	public function getTitle()
+	public function getTitle($default = false, $template = false)
 	{
-		return $this->title;
+		return $this->processValue($this->title, $default, $template);
 	}
 	
-	public function getAlphaTitle()
+	public function getAlphaTitle($default = false, $template = false)
 	{
-		return $this->alphaTitle;
+		return $this->processValue($this->alphaTitle, $default, $template);
 	}
 	
-	public function getDescription()
+	public function getDescription($default = false, $template = false)
 	{
-		return $this->description;
+		return $this->processValue($this->description, $default, $template);
 	}
 	
-	public function getCreation()
+	public function getCreation($format = false, $default = false, $template = false)
 	{
-		return $this->creation;
+		if(!$format){
+			return $this->publishDate;
+		}
+		return $this->processValue(strftime($format, $this->creation->format('U')), $default, $template);
 	}
 	
-	public function getSlug()
+	public function getSlug($default = false, $template = false)
 	{
-		return $this->slug;
+		return $this->processValue($this->slug, $default, $template);
 	}
 	
-	public function getPicture()
+	public function getPicture($size = 'thumb', $default = false, $template = false)
 	{
-		return $this->picture;
+		$picture = substr($this->picture, 0, -4).'_'.$size.substr($this->picture, -4);
+		return $this->processValue($picture, $default, $template);
 	}
 	
-	public function getThumbnail()
+	public function getDuration($default = false, $template = false)
 	{
-		return $this->thumbnail;
-	}
-	
-	public function getDuration()
-	{
-		return $this->duration;
+		return $this->processValue($this->duration, $default, $template);
 	}
 	
 	public function getActivities($activity = false, $order = false)
@@ -111,19 +110,19 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		}
 	}
 	
-	public function getCredits()
+	public function getCredits($default = false, $template = false)
 	{
-		return $this->credits;
+		return $this->processValue($this->credits, $default, $template);
 	}
 
-	public function getFingerprint()
+	public function getPressReport($default = false, $template = false)
 	{
-		return $this->fingerprint;
+		return $this->processValue($this->pressReport, $default, $template);
 	}
 
-	public function getUrlFingerprint()
+	public function getTinyPressReport($default = false, $template = false)
 	{
-		return 'http://e-spct.fr/'.$this->fingerprint;
+		return $this->processValue($this->tinyPressReport, $default, $template);
 	}
 	
 	public function getQRCode($size)
@@ -137,7 +136,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		return $this->relations;
 	}
 	
-	public function load()
+	protected function load()
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
@@ -167,7 +166,6 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 							}
 							$this->relations[] = $newRelation;
 						}
-						//ksort($this->activities);
 						break;
 
 					case 'qrcode-small':
@@ -178,6 +176,9 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 						$this->largeQRCode = $child->nodeValue;
 						break;
 								
+					case 'creation':
+						$this->creation = new \DateTime($child->nodeValue);
+						break;
 					default:
 						$this->set($child->nodeName, $child->nodeValue);
 				}

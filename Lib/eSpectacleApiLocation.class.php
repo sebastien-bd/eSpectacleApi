@@ -26,49 +26,49 @@ class eSpectacleApiLocation extends eSpectacleApiElement
 	protected $lat				= '';
 	protected $lng				= '';
 	
-	public function getComplete()
+	public function getComplete($default = false, $template = false)
 	{
-		return $this->complete;
+		return $this->processValue($this->complete, $default, $template);
 	}
 	
-	public function getAddress()
+	public function getAddress($default = false, $template = false)
 	{
-		return $this->address;
+		return $this->processValue($this->address, $default, $template);
 	}
 	
-	public function getPostcode()
+	public function getPostcode($default = false, $template = false)
 	{
-		return $this->postcode;
+		return $this->processValue($this->postcode, $default, $template);
 	}
 	
-	public function getCity()
+	public function getCity($default = false, $template = false)
 	{
-		return $this->city;
+		return $this->processValue($this->city, $default, $template);
 	}
 	
-	public function getDepartmentCode()
+	public function getDepartmentCode($default = false, $template = false)
 	{
-		return $this->departmentCode;
+		return $this->processValue($this->departmentCode, $default, $template);
 	}
 	
-	public function getDepartmentName()
+	public function getDepartmentName($default = false, $template = false)
 	{
-		return $this->departmentName;
+		return $this->processValue($this->departmentName, $default, $template);
 	}
 	
-	public function getRegion()
+	public function getRegion($default = false, $template = false)
 	{
-		return $this->region;
+		return $this->processValue($this->region, $default, $template);
 	}
 	
-	public function getLat()
+	public function getLat($default = false, $template = false)
 	{
-		return $this->lat;
+		return $this->processValue($this->lat, $default, $template);
 	}
 	
-	public function getLng()
+	public function getLng($default = false, $template = false)
 	{
-		return $this->lng;
+		return $this->processValue($this->lng, $default, $template);
 	}
 	
 	protected function load()

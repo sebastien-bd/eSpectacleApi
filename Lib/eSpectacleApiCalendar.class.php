@@ -14,9 +14,19 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
-class eSpectacleApiCalendar extends eSpectacleApiElement
+class eSpectacleApiCalendar extends eSpectacleApiElement implements eSpectacleApiServiceInterface
 {
 	protected $display	= '';
+
+	public static function getServiceName()
+	{
+		return 'Calendar';
+	}
+	
+	public static function getServiceType()
+	{
+		return 'One';
+	}
 	
 	public function getDisplay()
 	{

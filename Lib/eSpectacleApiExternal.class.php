@@ -21,7 +21,6 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 	protected $name			= '';
 	protected $update		= '';
 	protected $activities	= array();
-	protected $application	= false;
 	
 	protected $object	= false;
 	
@@ -35,10 +34,7 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 		{
 			$this->object = $this->extract($this->type, $this->id);
 		}
-		//return call_user_func_array(array(get_class($this->object), $name), $arguments);
-
-		return $this->object->$name();
-			
+		return call_user_func_array(array($this->object, $name), $arguments);
 	}
 	
 	public function getActivities()
@@ -66,11 +62,6 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 		return $this->update;
 	}
 
-	public function getApplication()
-	{
-		return $this->application;
-	}
-	
 	public function load()
 	{
 		$this->id = $this->element->getAttribute('id');
@@ -85,6 +76,28 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 				$this->set($child->nodeName, $child->nodeValue);
 			}
 		}
+	}
+	
+	public function isLoaded()
+	{
+		if(!$this->object){
+			return false;
+		}else{
+			return $this->object->isLoaded();
+		}
+	}
+
+	public function isAvailable()
+	{
+		if(is_null($this->available)){
+			if($this->isLoaded()){
+				$available = true;
+			}else{
+				$available = $this->exists($this->type, $this->id);
+			}
+			$this->available = $available;
+		}
+		return $this->available;
 	}
 	
 }
