@@ -20,7 +20,6 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 	protected $id			= false;
 	protected $name			= '';
 	protected $update		= '';
-	protected $activities	= array();
 	
 	protected $object	= false;
 	
@@ -37,11 +36,6 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 		return call_user_func_array(array($this->object, $name), $arguments);
 	}
 	
-	public function getActivities()
-	{
-		return $this->activities;
-	}
-	
 	public function getId()
 	{
 		return $this->id;
@@ -51,7 +45,7 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 	{
 		return $this->type;
 	}
-	
+
 	public function getName()
 	{
 		return $this->name;
@@ -66,7 +60,6 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 	{
 		$this->id = $this->element->getAttribute('id');
 		$this->type = $this->element->getAttribute('type');
-		$this->activities = explode(', ', $this->element->getAttribute('activity'));
 		$this->update = new \DateTime($this->element->getAttribute('update'));
 
 		foreach($this->element->childNodes as $child)

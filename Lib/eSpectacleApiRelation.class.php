@@ -18,7 +18,7 @@ namespace eSpectacle\eSpectacleApi;
 class eSpectacleApiRelation extends eSpectacleApiElement
 {
 	protected $id				= false;
-	protected $activity			= '';
+	protected $activities		= '';
 	protected $status			= '';
 	protected $production		= false;
 	protected $organization		= false;
@@ -58,9 +58,9 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 		return count($this->services) ? true : false;
 	}
 	
-	public function getActivity()
+	public function getActivities()
 	{
-		return $this->activity;
+		return $this->activities;
 	}
 	
 	public function getStatus()
@@ -88,7 +88,8 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
 		$this->date = new \DateTime($this->element->getAttribute('date'));
-		$this->activity = $this->element->getAttribute('activity');
+		$this->status = $this->element->getAttribute('status');
+		$this->activities = explode(', ', $this->element->getAttribute('activity'));
 
 		foreach($this->element->childNodes as $child)
 		{

@@ -14,7 +14,7 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
-class eSpectacleApiOrganization extends eSpectacleApiElement
+class eSpectacleApiOrganization extends eSpectacleApiActivities
 {
 	protected $id					= false;
 	protected $version				= false;
@@ -32,9 +32,7 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	protected $largeQRCode			= '';
 	protected $smallQRCode			= '';
 	protected $location 			= false;
-	protected $activities			= array();
 	protected $credits				= false;
-	protected $relations 			= array();
 
 	public function getId()
 	{
@@ -60,23 +58,7 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 	{
 		return $this->update;
 	}
-	
-	public function getActivities($activity = false)
-	{
-		if(!$activity)
-		{
-			return array_keys($this->activities);
-		}
-		elseif(isset($this->activities[$activity]))
-		{
-			return $this->activities[$activity];
-		}
-		else 
-		{
-			return array();
-		}
-	}
-	
+
 	public function getCompleteName($default = false, $template = false)
 	{
 		return $this->processValue($this->completeName, $default, $template);
@@ -133,13 +115,9 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 		return $this->credits;
 	}
 	
-	public function getRelations()
-	{
-		return $this->relations;
-	}
-	
 	protected function load()
 	{
+		parent::load();
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
 		$this->date = new \DateTime($this->element->getAttribute('date'));
@@ -159,27 +137,13 @@ class eSpectacleApiOrganization extends eSpectacleApiElement
 						break;
 					
 					case 'activities':
-						foreach($child->childNodes as $activity)
-						{
-							if(!isset($this->activities[$activity->nodeValue]))
-							{
-								$this->activities[$activity->nodeValue] = array();
-							}
-						}
-						break;
-					
-					case 'relations':
-						foreach($child->childNodes as $relation)
-						{
-							$newRelation = new eSpectacleApiExternal($relation, $this->dom);
-							foreach($newRelation->getActivities() as $activity)
-							{
-								$this->activities[$activity][] = $newRelation;
-							}
-							$this->relations[] = $newRelation;
-						}
+						// Don't do anything, not even default process ;-)
 						break;
 
+					case 'relations':
+						// Don't do anything, not even default process ;-)
+						break;
+								
 					case 'qrcode-small':
 						$this->smallQRCode = $child->nodeValue;
 						break;

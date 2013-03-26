@@ -145,13 +145,20 @@ abstract class eSpectacleApiElement
 		
 		$this->loaded = true;
 	}
+
+	public function get($name)
+	{
+		$name = $this->camel($name);
+		if(!isset($this->$name)){
+			throw new \Exception("$name is not a parameter for \"".get_class($this)."\"");
+		}
+		return $this->$name;
+	}
 	
 	public function set($name, $value)
 	{
 		$name = $this->camel($name);
-		
-		if(!isset($this->$name))
-		{
+		if(!isset($this->$name)){
 			throw new \Exception("$name is not a parameter for \"".get_class($this)."\"");
 		}
 		$this->$name = $value;

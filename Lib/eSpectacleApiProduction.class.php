@@ -14,7 +14,7 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
-class eSpectacleApiProduction extends eSpectacleApiElement
+class eSpectacleApiProduction extends eSpectacleApiActivities
 {
 	protected $id				= false;
 	protected $version			= false;
@@ -31,9 +31,7 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	protected $tinyPressReport	= '';
 	protected $largeQRCode		= '';
 	protected $smallQRCode		= '';
-	protected $activities		= array();
 	protected $credits			= false;
-	protected $relations		= false;
 	
 	public function getId()
 	{
@@ -85,29 +83,15 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 	
 	public function getPicture($size = 'thumb', $default = false, $template = false)
 	{
-		$picture = substr($this->picture, 0, -4).'_'.$size.substr($this->picture, -4);
+		if($picture = $this->picture){
+			$picture = substr($this->picture, 0, -4).'_'.$size.substr($this->picture, -4);
+		}
 		return $this->processValue($picture, $default, $template);
 	}
 	
 	public function getDuration($default = false, $template = false)
 	{
 		return $this->processValue($this->duration, $default, $template);
-	}
-	
-	public function getActivities($activity = false, $order = false)
-	{
-		if(!$activity)
-		{
-			return $this->getActivitiesOrder(array_keys($this->activities));
-		}
-		elseif(isset($this->activities[$activity]))
-		{
-			return $this->activities[$activity];
-		}
-		else 
-		{
-			return array();
-		}
 	}
 	
 	public function getCredits($default = false, $template = false)
@@ -130,14 +114,10 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 		$property = $size."QRCode";
 		return $this->$property;
 	}
-
-	public function getRelations()
-	{
-		return $this->relations;
-	}
 	
 	protected function load()
 	{
+		parent::load();
 		$this->id = $this->element->getAttribute('id');
 		$this->version = $this->element->getAttribute('version');
 		$this->date = new \DateTime($this->element->getAttribute('date'));
@@ -148,26 +128,14 @@ class eSpectacleApiProduction extends eSpectacleApiElement
 			{
 				switch($child->nodeName)
 				{
+					case 'relations':
+						// Don't do anything, not even default process ;-)
+						break;
+								
 					case 'credits':
 						$this->credits = new eSpectacleApiCredits($child);
 						break;
 					
-					case 'relations':
-						foreach($child->childNodes as $relation)
-						{
-							$newRelation = new eSpectacleApiExternal($relation, $this->dom);
-							foreach($newRelation->getActivities() as $activity)
-							{
-								if(!isset($this->activities[$activity]))
-								{
-									$this->activities[$activity] = array();
-								}
-								$this->activities[$activity][] = $newRelation;
-							}
-							$this->relations[] = $newRelation;
-						}
-						break;
-
 					case 'qrcode-small':
 						$this->smallQRCode = $child->nodeValue;
 						break;
