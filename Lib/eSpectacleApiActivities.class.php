@@ -16,85 +16,91 @@ namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiActivities extends eSpectacleApiElement
 {
+	protected $library			= array();
 	protected $activities		= array();
-	protected $archives			= array();
-	
-	public function hasActivities($activity = false)
+
+	public function getRelationsStatus()
 	{
-		if(!$activity){
-			return count($this->activities);
-		}elseif(isset($this->activities[$activity])){
-			return count($this->activities[$activity]);
-		}else {
-			return false;
-		}
+		return array_keys($this->activities);
 	}
 
-	public function hasArchives($activity = false)
+	public function getRelationsTypes($status = false)
 	{
-		if(!$activity){
-			return count($this->archives);
-		}elseif(isset($this->archives[$activity])){
-			return count($this->archives[$activity]);
-		}else {
-			return false;
-		}
+		$result = $this->filterRelationLayer($this->activities, $status);
+		return array_keys($result);
 	}
 
-	public function hasRelations()
+	public function getRelationsActivities($type = false)
 	{
-		return count(array_merge($this->activities, $this->archives));
+		$result = $this->filterRelationLayer($this->activities, $type);
+		return array_keys($result);
 	}
 	
-	public function getRelations($activity = false)
+	public function getRelations($type = false, $activity = false, $status = false)
 	{
-		if(!$activity){
-			$keys = array_unique(array_merge(array_keys($this->activities), array_keys($this->archives)));
-			return $this->getActivitiesOrder($keys);
-		}else{
-			$result = array();
-			if(isset($this->activities[$activity])){
-				$result = array_merge($result, $this->activities[$activity]);
-			}
-			if(isset($this->archives[$activity])){
-				$result = array_merge($result, $this->archives[$activity]);
-			}
-			return $result;
-		}
-		return array_merge($this->activities, $this->archives);
+		$result = $this->activities;
+		if($type)
+			$result = $this->filterRelationLayer($result, $type);
+		if($activity)
+			$result = $this->filterRelationLayer($result, $activity);
+		if($status)
+			$result = $this->filterRelationLayer($result, $status);
+		return $result;
+	}
+
+	public function hasRelations($type = false, $activity = false, $status = false)
+	{
+		$result = $this->activities;
+		$result = $this->filterRelationLayer($result, $type);
+		$result = $this->filterRelationLayer($result, $activity);
+		$result = $this->filterRelationLayer($result, $status);
+		return count($result);
 	}
 	
-	public function getActivitiesLabels($display = 'activities')
+	public function findRelated($id)
 	{
-		return $this->getActivitiesOrder(array_keys($this->$display));
-	}
-
-	public function getActivities($activity = false, $start = 0, $count = false)
-	{
-		if(isset($this->activities[$activity])){
-			if($count){
-				return array_slice($this->activities[$activity], $start, $count);
-			}else{
-				return $this->activities[$activity];
+		if($id = $this->generateId(array($this->getId(), $id))){
+			if(isset($this->library[$id])){
+				return $this->library[$id];
 			}
-		}else {
-			return array();
 		}
+		return false;
 	}
-
-	public function getArchives($activity = false, $start = 0, $count = false)
+	
+	protected function generateId($ids)
 	{
-		if(isset($this->archives[$activity])){
-			if($count){
-				return array_slice($this->archives[$activity], $start, $count);
-			}else{
-				return $this->archives[$activity];
+		$links = array('po');
+		$a = substr($ids[0], 0, 1);
+		$b = substr($ids[1], 0, 1);
+		if(in_array($a.$b, $links)){
+			return $ids[0].'@'.$ids[1];
+		}
+		if(in_array($b.$a, $links)){
+			return $ids[1].'@'.$ids[0];
+		}
+		return false;
+	}
+	
+	protected function filterRelationLayer($level, $value = false)
+	{
+		$result = array();
+		if(!$value){
+			foreach($level as $key=>$cell){
+				$result = array_merge_recursive($result, $cell);
 			}
 		}else{
-			return array();
+			if(!is_array($value)){
+				$value = array($value);
+			}
+			foreach($value as $index){
+				if(isset($level[$index])){
+					$result = array_merge($result, $level[$index]);
+				}
+			}
 		}
+		return $result;
 	}
-	
+
 	protected function load()
 	{
 		foreach($this->element->childNodes as $child)
@@ -107,23 +113,28 @@ class eSpectacleApiActivities extends eSpectacleApiElement
 						foreach($child->childNodes as $relation)
 						{
 							$newRelation = new eSpectacleApiExternal($relation, $this->dom);
-							foreach($newRelation->getActivities() as $activity)
+
+							foreach($newRelation->getActivities(true) as $type=>$listActivities)
 							{
-								switch($newRelation->getStatus()){
-									case 'online':
-										if(!isset($this->activities[$activity])){
-											$this->activities[$activity] = array();
-										}
-										$this->activities[$activity][] = $newRelation;
-										break;
-									case 'archive':
-										if(!isset($this->archives[$activity])){
-											$this->archives[$activity] = array();
-										}
-										$this->archives[$activity][] = $newRelation;
-										break;
+								if(!isset($this->activities[$type])){
+									$this->activities[$type] = array();
 								}
 								
+								foreach($listActivities as $activity)
+								{
+									if(!isset($this->activities[$type][$activity])){
+										$this->activities[$type][$activity] = array();
+									}
+									
+									$status = $newRelation->getStatus();
+									if(!isset($this->activities[$type][$activity][$status])){
+										$this->activities[$type][$activity][$status] = array();
+									}
+									$this->activities[$type][$activity][$status][] = $newRelation;
+								}
+							}
+							if(!isset($this->library[$newRelation->getId()])){
+								$this->library[$newRelation->getId()] = $newRelation;
 							}
 						}
 						break;

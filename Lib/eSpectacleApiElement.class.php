@@ -111,11 +111,7 @@ abstract class eSpectacleApiElement
 	public function exists($name, $id)
 	{
 		$xPath = new \DOMXPath($this->dom);
-		if($name == 'relation'){
-			$query = '//'.$name.'[@id='.$id.']';
-		}else{
-			$query = '//'.$name.'[@id="'.$id.'"]';
-		}
+		$query = '//'.$name.'[@id="'.$id.'"]';
 		$result = $xPath->query($query);
 		return $result->length ? $result : false;
 	}

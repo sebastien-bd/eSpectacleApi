@@ -18,7 +18,7 @@ namespace eSpectacle\eSpectacleApi;
 class eSpectacleApiRelation extends eSpectacleApiElement
 {
 	protected $id				= false;
-	protected $activities		= '';
+	protected $activities		= array();
 	protected $status			= '';
 	protected $production		= false;
 	protected $organization		= false;
@@ -30,22 +30,26 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 		return $this->id;
 	}
 
-	public function getServices($deploy = false)
+	public function getServices($names = array(), $deploy = false)
 	{
+		if(!is_array($names)){
+			$names = array($names);
+		}
 		if($deploy){
 			$services = array();
 			foreach($this->services as $name=>$value){
-				if(is_array($value)){
-					$services = array_merge($services, $value);
-				}else{
-					$services[] = $value;
+				if(!$names || in_array($name, $names)){
+					if($deploy && is_array($value)){
+						$services = array_merge($services, $value);
+					}else{
+						$services[] = $value;
+					}
 				}
 			}
 			return $services;
 		}else{
 			return $this->services;
 		}
-		
 	}
 
 	public function getService($service)
@@ -53,14 +57,31 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 		return $this->services[$service];
 	}
 
-	public function hasServices()
+	public function hasServices($names = false)
 	{
-		return count($this->services) ? true : false;
+		if(!$names){
+			return count($this->services) ? true : false;
+		}else{
+			if(!is_array($names)){
+				$names = array($names);
+			}
+			return count(array_intersect($names, array_keys($this->services)));
+		}
 	}
 	
-	public function getActivities()
+	public function getActivities($type = false)
 	{
-		return $this->activities;
+		if(!$type){
+			$activities = array();
+			foreach($this->activities as $type=>$values){
+				$activities = array_merge($activities, $values);
+			}
+			return $activities;
+		}elseif($type === true){
+			return $this->activities;
+		}else{
+			return $this->activities[$type];
+		}
 	}
 	
 	public function getStatus()
@@ -89,7 +110,7 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 		$this->version = $this->element->getAttribute('version');
 		$this->date = new \DateTime($this->element->getAttribute('date'));
 		$this->status = $this->element->getAttribute('status');
-		$this->activities = explode(', ', $this->element->getAttribute('activity'));
+		//$this->activities = explode(', ', $this->element->getAttribute('activity'));
 
 		foreach($this->element->childNodes as $child)
 		{
@@ -102,6 +123,16 @@ class eSpectacleApiRelation extends eSpectacleApiElement
 					case 'external-element':
 						$param = $child->getAttribute('type');
 						$this->set($param, new eSpectacleApiExternal($child, $this->dom));
+						break;
+						
+					case 'activities':
+						foreach($child->childNodes as $activity){
+							$type = $activity->getAttribute('type');
+							if(!isset($this->activities[$type])){
+								$this->activities[$type] = array();
+							}
+							$this->activities[$type][] = $activity->nodeValue;
+						}
 						break;
 
 					case 'services':

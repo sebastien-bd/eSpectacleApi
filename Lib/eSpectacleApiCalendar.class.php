@@ -16,6 +16,7 @@ namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiCalendar extends eSpectacleApiElement implements eSpectacleApiServiceInterface
 {
+	protected $id 		= '';
 	protected $display	= '';
 
 	public static function getServiceName()
@@ -28,6 +29,11 @@ class eSpectacleApiCalendar extends eSpectacleApiElement implements eSpectacleAp
 		return 'One';
 	}
 	
+	public function getId()
+	{
+		return $this->id;
+	}
+	
 	public function getDisplay()
 	{
 		return $this->display;
@@ -35,6 +41,8 @@ class eSpectacleApiCalendar extends eSpectacleApiElement implements eSpectacleAp
 	
 	protected function load()
 	{
+		$this->id = $this->element->getAttribute('id');
+		
 		foreach($this->element->childNodes as $child)
 		{
 			if($child->nodeType == XML_ELEMENT_NODE)

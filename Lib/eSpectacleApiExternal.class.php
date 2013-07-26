@@ -25,15 +25,14 @@ class eSpectacleApiExternal extends eSpectacleApiElement
 	
 	public function __call($name, $arguments)
 	{
-		if(!$this->loaded)
-		{
+		if(!$this->loaded){
 			$this->loadElement();
 		}
-		if(!$this->object)
-		{
+		if(!$this->object){
 			$this->object = $this->extract($this->type, $this->id);
 		}
-		return call_user_func_array(array($this->object, $name), $arguments);
+		$result = call_user_func_array(array($this->object, $name), $arguments);
+		return $result;
 	}
 	
 	public function getId()

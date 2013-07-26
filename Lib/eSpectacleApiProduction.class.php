@@ -32,6 +32,7 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 	protected $largeQRCode		= '';
 	protected $smallQRCode		= '';
 	protected $credits			= false;
+	protected $medias			= array();
 	
 	public function getId()
 	{
@@ -99,6 +100,11 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 		return $this->processValue($this->credits, $default, $template);
 	}
 
+	public function getMedias($default = false, $template = false)
+	{
+		return $this->processValue($this->medias, $default, $template);
+	}
+	
 	public function getPressReport($default = false, $template = false)
 	{
 		return $this->processValue($this->pressReport, $default, $template);
@@ -146,6 +152,12 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 								
 					case 'creation':
 						$this->creation = new \DateTime($child->nodeValue);
+						break;
+						
+					case 'medias':
+						foreach($child->childNodes as $video){
+							$this->medias[eSpectacleApiMedia::TypeVideo][] = new eSpectacleApiMedia($video);
+						}
 						break;
 					default:
 						$this->set($child->nodeName, $child->nodeValue);

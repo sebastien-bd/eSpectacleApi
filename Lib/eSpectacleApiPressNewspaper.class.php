@@ -16,6 +16,7 @@ namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiPressNewspaper extends eSpectacleApiElement implements eSpectacleApiServiceInterface
 {
+	protected $id			= '';
 	protected $document		= '';
 	protected $title		= '';
 	protected $abstract		= '';
@@ -31,6 +32,11 @@ class eSpectacleApiPressNewspaper extends eSpectacleApiElement implements eSpect
 	public static function getServiceType()
 	{
 		return 'Many';
+	}
+	
+	public function getId()
+	{
+		$this->id;
 	}
 	
 	public function getDocument($default = false, $template = false)
@@ -68,6 +74,8 @@ class eSpectacleApiPressNewspaper extends eSpectacleApiElement implements eSpect
 	
 	protected function load()
 	{
+		$this->id = $this->element->getAttribute('id');
+		
 		foreach($this->element->childNodes as $child)
 		{
 			if($child->nodeType == XML_ELEMENT_NODE)
