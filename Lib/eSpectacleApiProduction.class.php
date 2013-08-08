@@ -18,15 +18,15 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 {
 	protected $id				= false;
 	protected $version			= false;
-	protected $date				= '';
+	protected $date			= '';
 	protected $update			= '';
 	protected $title			= '';
 	protected $alphaTitle		= '';
 	protected $description		= '';
-	protected $creation			= '';
-	protected $slug				= '';
+	protected $creation		= '';
+	protected $slug			= '';
 	protected $picture			= '';
-	protected $duration			= '';
+	protected $duration		= '';
 	protected $pressReport		= '';
 	protected $tinyPressReport	= '';
 	protected $largeQRCode		= '';

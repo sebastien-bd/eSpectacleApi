@@ -33,8 +33,21 @@ class eSpectacleApiLibrary
 		}
 		return false;
 	}
+
+	public static function replaceObject($name, $id, $object)
+	{
+		$parseName = self::parseName($name, $id);
+		
+		if(!isset(self::$_library[$parseName])){
+			$result = true;
+		}else{
+			$result = false;
+		}
+		self::$_library[$parseName] = $object;
+		return $result;
+	}
 	
-	public static function getObject($name, $id)
+	public static function getObject($name, $id = false)
 	{
 		$parseName = self::parseName($name, $id);
 		if(isset(self::$_library[$parseName])){
@@ -43,8 +56,20 @@ class eSpectacleApiLibrary
 		return false;
 	}
 
-	protected static function parseName($name, $id)
+	protected static function parseName($name, $id = false)
 	{
-		return $name.'_'.$id;
+		if(!$id){
+			return $name;
+		}
+		switch(strtolower($name)){
+			case 'organization':
+			case 'production':
+				$result = $id;
+				break;
+			default:
+				$result = $name.'_'.$id;
+				break;
+		}
+		return $result;
 	}
 }

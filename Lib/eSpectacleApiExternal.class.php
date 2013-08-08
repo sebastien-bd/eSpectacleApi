@@ -16,10 +16,10 @@ namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiExternal extends eSpectacleApiElement
 {
-	protected $type			= false;
-	protected $id			= false;
-	protected $name			= '';
-	protected $update		= '';
+	protected $type	= false;
+	protected $id		= false;
+	protected $name	= '';
+	protected $update	= '';
 	
 	protected $object	= false;
 	
