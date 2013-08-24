@@ -57,9 +57,11 @@ class eSpectacleApiPressNewspaper extends eSpectacleApiElement implements eSpect
 	public function getPublishDate($format = false, $default = false, $template = false)
 	{
 		if(!$format){
-			return $this->publishDate;
+			$publishDate = $this->publishDate;
+		}else{
+			$publishDate = $this->publishDate ? strftime($format, $this->publishDate->format('U')) : false;
 		}
-		return $this->processValue(strftime($format, $this->publishDate->format('U')), $default, $template);
+		return $this->processValue($publishDate, $default, $template);
 	}
 
 	public function getAuthor($default = false, $template = false)

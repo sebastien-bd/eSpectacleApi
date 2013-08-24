@@ -16,6 +16,9 @@ namespace eSpectacle\eSpectacleApi;
 
 class eSpectacleApiProduction extends eSpectacleApiActivities
 {
+	const MediaEmbedded			= 'embedded';
+	const MediaPicture			= 'picture';
+	
 	protected $id				= false;
 	protected $version			= false;
 	protected $date			= '';
@@ -100,11 +103,6 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 		return $this->processValue($this->credits, $default, $template);
 	}
 
-	public function getMedias($default = false, $template = false)
-	{
-		return $this->processValue($this->medias, $default, $template);
-	}
-	
 	public function getPressReport($default = false, $template = false)
 	{
 		return $this->processValue($this->pressReport, $default, $template);
@@ -119,6 +117,17 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 	{
 		$property = $size."QRCode";
 		return $this->$property;
+	}
+	
+	public function hasMedia($type)
+	{
+		return isset($this->medias[$type]);
+	}
+
+	public function getMedias($type, $default = false, $template = false)
+	{
+		$media = isset($this->medias[$type]) ? $this->medias[$type] : false;
+		return $this->processValue($media, $default, $template);
 	}
 	
 	protected function load()
@@ -155,8 +164,15 @@ class eSpectacleApiProduction extends eSpectacleApiActivities
 						break;
 						
 					case 'medias':
-						foreach($child->childNodes as $video){
-							$this->medias[eSpectacleApiMedia::TypeVideo][] = new eSpectacleApiMedia($video);
+						foreach($child->childNodes as $media){
+							switch($media->nodeName){
+								case 'video':
+									$this->medias[self::MediaEmbedded][] = new eSpectacleApiEmbedded($media);
+									break;
+								case 'picture':
+									$this->medias[self::MediaPicture][] = new eSpectacleApiFile($media);
+									break;
+							}
 						}
 						break;
 					default:

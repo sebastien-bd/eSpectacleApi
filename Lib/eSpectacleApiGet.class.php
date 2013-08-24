@@ -216,14 +216,13 @@ class eSpectacleApiGet
     				$object = 'production';
     				break;
     		}
-    		$url = $this->host.'webservice/get?key='.$this->key.'&object='.$object.'&id='.$id;
-			
+    		$url = $this->host.'webservice/get?key='.$this->key.'&id='.$id;
+
     		$curl = curl_init($url);
 		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
 		    $xml = curl_exec($curl);
 		    curl_close($curl);
-		    
 		    if(!$xml){
 		    	return false;
 		    }

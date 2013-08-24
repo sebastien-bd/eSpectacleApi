@@ -14,9 +14,8 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
-class eSpectacleApiMedia extends eSpectacleApiElement
+class eSpectacleApiEmbedded extends eSpectacleApiElement
 {
-	const TypeVideo				= 'video';
 	
 	protected $provider			= '';
 	protected $title			= '';
