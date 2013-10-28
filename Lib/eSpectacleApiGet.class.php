@@ -21,34 +21,19 @@
  */
 namespace eSpectacle\eSpectacleApi;
 
+use eSpectacle\eSpectacleApi\eSpectacleApi;
 use eSpectacle\eSpectacleApi\eSpectacleApiData;
 
-class eSpectacleApiGet
+class eSpectacleApiGet extends eSpectacleApi
 {
 	public $key;
 	
 	public $cacheOn			= false;	// Active the cache
 	public $cachePath		= '';		// Path to the Cache directory
 	public $cacheDelay		= 86400;	// Delay to the next loading
-	public $host			= "http://api.e-spectacle.fr/";
 	
 	public $datas;
 	public $errors;
-	
-	/**
-	 * Constructor
-	 * @param string $object	e-Spectacles API key
-	 * @param string $object	object's name
-	 * @param integer $id		object's unique id
-	 * @return void
-	 */
-	public function __construct($key, $host = false)
-	{
-		if($host){
-			$this->host = $host;
-		}
-		$this->key = $key;
-	}
 	
 	/**
 	 * Activate cache processing
@@ -208,25 +193,14 @@ class eSpectacleApiGet
     	}elseif(!$force && ($this->cacheOn && $this->hasCacheFile($id))){
     		$xml = file_get_contents($this->generateCacheFilename($id));
     	}else{
-    		switch(substr($id, 0, 1)){
-    			case 'o':
-    				$object = 'organization';
-    				break;
-    			case 'p':
-    				$object = 'production';
-    				break;
-    		}
-    		$url = $this->host.'webservice/get?key='.$this->key.'&id='.$id;
-
-    		$curl = curl_init($url);
-		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-		    $xml = curl_exec($curl);
-		    curl_close($curl);
-		    if(!$xml){
-		    	return false;
-		    }
+    		$parameters = array(
+    				'module'	=> 'webservice',
+    				'action'	=> 'get',
+    				'id'		=> $id
+    		);
     		
+    		$xml = $this->sendRequest($parameters);;
+
 			if($this->hasErrors($xml))
     		{
     			return false;
