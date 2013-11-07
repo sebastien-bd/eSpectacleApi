@@ -14,7 +14,7 @@ class eSpectacleApi
 {
 	protected $privateHash;
 	protected $publicHash;
-	protected $host	= "http://api.e-spectacle.fr/";
+	protected $host	= "https://api.e-spectacle.fr/";
 	
 	public function __construct($privateHash, $publicHash, $host = false)
 	{
